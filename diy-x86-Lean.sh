@@ -24,7 +24,7 @@ date=`date +%m.%d.%Y`
 sed -i "s/SyPopo$/SyPopo $date/g" package/base-files/files/etc/banner
 
 echo '添加软件包'
-git clone https://github.com/kenzok8/small-package
+git clone https://github.com/liuran001/openwrt-packages
 
 echo '定义默认值'
 cat > package/lean/default-settings/files/zzz-default-settings <<-EOF
