@@ -10,7 +10,7 @@
 #sed -i '1,2s/coolsnowwolf/sypopo/g' ./feeds.conf.default
 
 echo '修改网关地址'
-sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.100.223/g' package/base-files/files/bin/config_generate
 
 echo '修改时区'
 sed -i "s/'UTC'/'CST-8'\n        set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -24,9 +24,7 @@ date=`date +%m.%d.%Y`
 sed -i "s/SyPopo$/SyPopo $date/g" package/base-files/files/etc/banner
 
 echo '添加软件包'
-#git clone https://github.com/kenzok8/small-package package/small-package
-git clone https://github.com/kenzok8/openwrt-packages.git package/kenzok8
-git clone https://github.com/kenzok8/small.git package/small
+git clone https://github.com/kenzok8/small-package
 
 echo '定义默认值'
 cat > package/lean/default-settings/files/zzz-default-settings <<-EOF
@@ -49,11 +47,11 @@ rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
 
+sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/adguardhome.lua
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/aria2.lua
+sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/smartdns.lua
 sed -i 's/services/nas/g' /usr/lib/lua/luci/view/aria2/overview_status.htm
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/hd_idle.lua
-sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/samba.lua
-sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/samba4.lua
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/minidlna.lua
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/transmission.lua
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/mjpg-streamer.lua
@@ -98,11 +96,11 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:
 
 #设置网络
 #uci set network.wan.proto='pppoe'
-#uci set network.wan.username='account'
-#uci set network.wan.password='password'
+uci set network.wan.username='root'
+uci set network.wan.password='d58164742d'
 uci set network.wan.ifname='eth3'
 uci set network.wan6.ifname='eth3'
-uci set network.lan.ipaddr='192.168.5.1'
+uci set network.lan.ipaddr='192.168.100.223'
 uci set network.lan.proto='static'
 uci set network.lan.type='bridge'
 uci set network.lan.ifname='eth0 eth1 eth2'
@@ -138,5 +136,3 @@ EOF
 
 echo '当前路径'
 pwd
-
-
